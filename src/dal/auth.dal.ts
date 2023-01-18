@@ -3,7 +3,7 @@ import { statSync } from 'fs';
 import { join } from 'path';
 import { RedisService } from '../services/redish.service';
 import { ISignUpUser, IRequest, IAdminLogin, ILoggedInUser } from '@interfaces/index';
-import { Users } from '../models/index';
+import { Users } from '../models';
 import { generateOtp, verifyOtp, sendSms } from '../utils/auth.utils';
 import { logger } from '../services/logger.service';
 import { IOtp } from '../interfaces/auth.interface';

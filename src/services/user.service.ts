@@ -1,4 +1,4 @@
-import { Users } from "../models/index";
+import { Users } from "../models";
 
 export class UserService {
   constructor() {}

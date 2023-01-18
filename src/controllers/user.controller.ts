@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import {CREATED, INTERNAL_SERVER_ERROR, CONFLICT, OK} from "http-status-codes";
-import { UserService } from "../services/index";
+import { UserService } from "../services";
 
 const userService = new UserService();
 
