@@ -27,11 +27,7 @@ const UserSchema: Schema = new Schema({
     dob: {type: String, trim: true},
     isPhoneVerified: {type: Boolean, trim: true, default: false},
     isEmailVerified: {type: Boolean, trim: true, default: false},
-    role :{
-        type : String,
-        enum:["ADMIN", "USER"],
-        default:"USER",
-    },
+    role :{ type : String, enum:["ADMIN", "USER"], default:"USER"},
 }, {timestamps: true});
 
 const Users = model("Users", UserSchema);
