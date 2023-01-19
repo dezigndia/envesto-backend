@@ -1,16 +1,8 @@
 const express = require('express');
 const path = require('path');
+require('custom-env').env('development', './env');
 const app = express();
-console.log("sfsdfs")
 app.use(express.static(path.join(__dirname, '../doc')));
-app.listen(3002, () => {
-    console.log("API doc running: "+ 3002);
+app.listen(process.env.API_DOC_PORT, () => {
+    console.log("API doc running: "+ process.env.API_DOC_PORT);
 });
-
-
-
-// const express = require('express');
-// const path = require('path');
-// const app = express();
-// app.use(express.static(path.join(__dirname, 'doc')));
-// app.listen(3002, () => { console.log('api doc is running port 3002') });
