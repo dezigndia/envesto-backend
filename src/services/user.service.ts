@@ -36,4 +36,20 @@ export class UserService {
     });
   }
 
+  public async deleteUserProfile(params: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { _id } = params;
+        const user = await Users.findByIdAndUpdate(_id, { isDeleted: false });
+        if (user) {
+          return resolve({status: true, message:"User profile deleted successfully"});
+        } else {
+            return resolve({status: false, message:"Something went wrong"});
+        }
+      } catch (error: any) {
+        return reject(error.errors);
+      }
+    });
+  }
+
 }

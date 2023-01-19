@@ -24,4 +24,14 @@ export class UserController {
       return res.status(INTERNAL_SERVER_ERROR).send({ error });
     }
   }
+
+  public static async deleteUserProfile(req: Request, res: Response) {
+    try {
+      const data: any = await userService.deleteUserProfile(req.query);
+      if (data.status) return res.status(CREATED).json(data);
+      else return res.status(CONFLICT).json(data);
+    } catch (error) {
+      return res.status(INTERNAL_SERVER_ERROR).send({ error });
+    }
+  }
 }
