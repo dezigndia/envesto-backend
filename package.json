@@ -6,7 +6,7 @@
   "scripts": {
     "test": "ng test",
     "build:doc": "apidoc -i src/ -o doc/",
-    "start:doc": "npm run build:doc && node ./src/api-doc-server.ts",
+    "start:doc": "npm run build:doc && npm run doc",
     "start:dev": "nodemon",
     "start:build": "rimraf ./dist && tsc",
     "start:staging": "cross-env NODE_ENV=staging node -r ./dist/index.js",
@@ -70,6 +70,7 @@
     "@types/async-redis": "^1.1.2",
     "@types/mongoose": "^5.11.97",
     "@types/mysql": "^2.15.19",
+    "apidoc": "^0.53.1",
     "async-redis": "^2.0.0",
     "aws-sdk": "^2.1037.0",
     "cookie-parser": "^1.4.5",
@@ -99,6 +100,7 @@
     "pino-pretty": "^7.0.1",
     "redis": "^3.1.2",
     "rimraf": "^3.0.2",
+    "slugify": "^1.6.5",
     "typescript-logger": "^5.0.1",
     "unirest": "^0.6.0",
     "uuidv4": "^6.2.12"
