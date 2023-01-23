@@ -1,10 +1,10 @@
-import { Feed } from "../models/index";
+import { Feed, Review } from "../models/index";
 import { Pagination, IRequest, IFeed } from '../interfaces';
 import { getUserFromRequest } from "../helpers/request.helper";
 import { Request } from "express";
 import { FileUtils } from "../utils";
 import { json } from "node:stream/consumers";
-import { upload } from "../middlewares";
+import { upload } from "../middl disewares";
 
 export class FeedDal {
   public async postFeed(data: IFeed, files: any, user: any) {
@@ -145,4 +145,46 @@ export class FeedDal {
       }
     });
   }
+
+  public async addFeedReview(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+     
+      try {
+        const { feedId, review, like, dislike } = requestData.body;
+        const { comment, stars } = review;
+        const { user } = requestData;
+
+        const newReview = new Review({
+          comment,
+          stars,
+          user: user._id,
+          like,
+          dislike,
+          feed: feedId,
+        });
+        const addedReview = await newReview.save();
+        if (addedReview) {
+          const review = await Review.find({"feed": feedId }).sort({
+            createdAt: -1,
+          });
+          resolve({
+            status: true,
+            data: addedReview,
+            message: "Review added successfully",
+          });
+        } 
+       
+        else {
+          resolve({
+            status: false,
+            message: "Unable to add review",
+          });
+        }
+       
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
 }

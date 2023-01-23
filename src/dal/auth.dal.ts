@@ -3,7 +3,7 @@ import { statSync } from 'fs';
 import { join } from 'path';
 import { RedisService } from '../services/redish.service';
 import { ISignUpUser, IRequest, IAdminLogin, ILoggedInUser } from '@interfaces/index';
-import { Users } from '../models';
+import { User } from '../models';
 import { generateOtp, verifyOtp, sendSms } from '../utils/auth.utils';
 import { logger } from '../services/logger.service';
 import { IOtp } from '../interfaces/auth.interface';
@@ -20,19 +20,19 @@ export class AuthDal {
                 
                 const userData: ISignUpUser = data.body!;
 
-                const isEmailExist = await Users.findOne({email: userData.email});
+                const isEmailExist = await User.findOne({email: userData.email});
                 if(isEmailExist) return resolve({message: "Email already exist", status: false});
 
-                const isPhoneExist = await Users.findOne({phone: userData.phone});
+                const isPhoneExist = await User.findOne({phone: userData.phone});
                 if(isPhoneExist) return resolve({message: "Mobile already exist", status: false});
 
-                const newUser = new Users(userData);
+                const newUser = new User(userData);
                 const saveUser = await newUser.save();
                 return resolve({user: saveUser, status: true});
                 // let list: any = await this.rds.getUser();
                 // if(list) return resolve({list, "redis": "redis"});
                 // else {
-                //     list = await db.execute('select * from users');
+                //     list = await db.execute('select * from User');
                 //     await this.rds.setUser({list, db: "db"});
                 //     return resolve(list)
                 // }
@@ -47,13 +47,12 @@ export class AuthDal {
             try {
                 const {phone} = data;
                 let user;
-                console.log(phone);
-                const isUserExist = await Users.findOne({phone: phone});
+                const isUserExist = await User.findOne({phone: phone});
                 if(isUserExist) {
                     user = isUserExist;
                 }
                  else {
-                    const newUser = new Users({phone});
+                    const newUser = new User({phone});
                     user = await newUser.save();
                 }
                 const {otp, token} = generateOtp(phone);
@@ -75,7 +74,7 @@ export class AuthDal {
                 const isOtpValid = await verifyOtpToken(data);
                 if(isOtpValid.status) {
                     const phone = isOtpValid.data.phone;
-                    const userDetails: any = await Users.findOne({phone: phone}).select('_id phone role email');
+                    const userDetails: any = await User.findOne({phone: phone}).select('_id phone role email');
                     const payload = {_id: userDetails._id, phone: userDetails.phone, role: userDetails.role};
                     const token = generateToken(payload);
                     return resolve({token, userDetails, status: true});
@@ -90,9 +89,9 @@ export class AuthDal {
         return new Promise(async (resolve, reject) => {
             try {
                let {email, password} = data;
-                const isEmailExist = await Users.findOne({email: email});
+                const isEmailExist = await User.findOne({email: email});
                 if(isEmailExist) {
-                    const userDetails: any = await Users.findOne({email:email,password:password}).select('_id phone role email');
+                    const userDetails: any = await User.findOne({email:email,password:password}).select('_id phone role email');
                     if(userDetails) {
                     const payload = {_id: userDetails._id, phone: userDetails.phone, role: userDetails.role};
                     const token = generateToken(payload);
@@ -104,7 +103,7 @@ export class AuthDal {
 
                 // if(isPhoneExist) return resolve({message: "Mobile already exist", status: false});
 
-                // const newUser = new Users(userData);
+                // const newUser = new User(userData);
                 // const saveUser = await newUser.save();
             } catch (error: any) {
                 return reject(error.errors);

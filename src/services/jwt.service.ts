@@ -26,6 +26,7 @@ export const verifyToken = async (token: string) => {
 
         const secret = process.env.JWT_SECRET as string;
         const tokenUser = await verify(token, secret, verifyOptions);
+        console.log(tokenUser)
         if(!tokenUser) {
             return {status: false, error: 'Unauthorised user'};
         }

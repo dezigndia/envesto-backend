@@ -1,9 +1,8 @@
 import { FeedController } from "../../controllers/index";
 import { Router } from "express";
-import { upload, verifyUserToken } from "../../middlewares/index";
+import { upload, AuthMiddleware} from "../../middlewares/index";
 
 const feedRouter = Router();
-feedRouter.use(verifyUserToken);
 
 /******************************************************************************
  *                     Add Feed Content - "POST /api/feed"
@@ -80,7 +79,7 @@ feedRouter.use(verifyUserToken);
 feedRouter.post("/", upload.any(), FeedController.postFeedContent);
 
 /******************************************************************************
- *                     Get Feed Contents - "GET /api/Feed"
+ *                     Get Feed Contents - "GET /api/feed"
  ******************************************************************************/
 /**
  * @api {GET} /api/feed get feed
@@ -114,7 +113,7 @@ feedRouter.get("/:id?/:page/:perPage?", FeedController.fetchFeedContent);
 feedRouter.get("/", FeedController.fetchAllFeedContent);
 
 /******************************************************************************
- *                     Update Feed status Active/Inctive  - "Update /api/Feed/status"
+ *                     Update Feed status Active/Inctive  - "Update /api/feed/status"
  ******************************************************************************/
 /**
  * @api {UPDATE} /api/Feed/status update feed
@@ -150,5 +149,52 @@ feedRouter.get("/", FeedController.fetchAllFeedContent);
  *     }
  */
  feedRouter.put("/status", FeedController.updateFeedStatus);
+
+ /******************************************************************************
+ *                     add feed review - "POST /api/feed/review"
+ ******************************************************************************/
+/**
+ * @api {POST} /api/feed/review add Feed review 
+ * @apiName add Feed review -POST
+ * @apiGroup Feed
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ *  @apiExample Sample-Request:
+ *   {
+ *      "feedId":"feedId",
+ *      "likes":true,
+ *      "dislikes":false,
+ *      "review":{  
+ *          "comment":"comment",
+ *          "stars": 3,
+ *      }
+ *   }
+ * 
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "Feed review added successfully",
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *       "error": true,
+ *       "message": "Something went wrong"
+ *     }
+ */
+feedRouter.post("/review",
+AuthMiddleware.verifyToken,
+AuthMiddleware.findUser,
+FeedController.addFeedReview,
+);
 
 export default feedRouter;

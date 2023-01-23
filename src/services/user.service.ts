@@ -1,4 +1,4 @@
-import { Users } from "../models";
+import { User } from "../models";
 
 export class UserService {
   constructor() {}
@@ -7,7 +7,7 @@ export class UserService {
     return new Promise(async (resolve, reject) => {
       try {
         const { _id } = requestData;
-        const user = await Users.findById({_id});
+        const user = await User.findById({_id});
         if (user) {
           return resolve({status: true, message:"User profile fetch successfully",  data: user});
         } else {
@@ -24,7 +24,7 @@ export class UserService {
       try {
         const { _id, name, email, phone, role } = requestData;
         const request = { name, email, phone, role }
-        const user = await Users.findByIdAndUpdate(_id, request);
+        const user = await User.findByIdAndUpdate(_id, request);
         if (user) {
           return resolve({status: true, message:"User profile updated successfully"});
         } else {
@@ -40,7 +40,7 @@ export class UserService {
     return new Promise(async (resolve, reject) => {
       try {
         const { _id } = params;
-        const user = await Users.findByIdAndUpdate(_id, { isDeleted: false });
+        const user = await User.findByIdAndUpdate(_id, { isDeleted: false });
         if (user) {
           return resolve({status: true, message:"User profile deleted successfully"});
         } else {
