@@ -109,7 +109,7 @@ feedRouter.post("/", upload.any(), FeedController.postFeedContent);
  *        "message": "Something went wrong"
  *     }
  */
-feedRouter.get("/:id?/:page/:perPage?", FeedController.fetchFeedContent);
+feedRouter.get("/", FeedController.fetchFeedContent);
 feedRouter.get("/", FeedController.fetchAllFeedContent);
 
 /******************************************************************************
@@ -195,6 +195,41 @@ feedRouter.post("/review",
 AuthMiddleware.verifyToken,
 AuthMiddleware.findUser,
 FeedController.addFeedReview,
+);
+
+ /******************************************************************************
+ *                     get feed review - "GET /api/feed/review?_id=63ce66ceff95c357646caaed"
+ ******************************************************************************/
+/**
+ * @api {GET} api/feed/review?_id=63ce66ceff95c357646caaed get Feed review 
+ * @apiName get Feed review -GET
+ * @apiGroup Feed
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "Feed review fetch successfully",
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *       "error": true,
+ *       "message": "Something went wrong"
+ *     }
+ */
+feedRouter.get("/review",
+AuthMiddleware.verifyToken,
+FeedController.getFeedReview,
 );
 
 export default feedRouter;

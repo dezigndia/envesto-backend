@@ -4,7 +4,6 @@ import { getUserFromRequest } from "../helpers/request.helper";
 import { Request } from "express";
 import { FileUtils } from "../utils";
 import { json } from "node:stream/consumers";
-import { upload } from "../middl disewares";
 
 export class FeedDal {
   public async postFeed(data: IFeed, files: any, user: any) {
@@ -182,6 +181,29 @@ export class FeedDal {
         }
        
       } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  public async getFeedReview(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { _id } = requestData.query;
+       const data = await Review.findById(_id)
+        if (data) {
+          resolve({
+            status: true,
+            data: data,
+            message: "Review list fetch successfully",
+          });
+        } 
+        else {
+          return resolve({status: false, message:"Something went wrong"});
+        }
+       
+      } catch (error) {
+        console.log(error)
         reject(error);
       }
     });
