@@ -209,4 +209,26 @@ export class FeedDal {
     });
   }
 
+  public async deleteFeed(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { _id } = requestData;
+       const data = await Feed.findByIdAndUpdate(_id, { isDeleted: true }, { new: true });
+        if (data) {
+          resolve({
+            status: true,
+            data: data,
+            message: "Feed deleted successfully",
+          });
+        } 
+        else {
+          return resolve({status: false, message:"Something went wrong"});
+        }
+       
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
 }

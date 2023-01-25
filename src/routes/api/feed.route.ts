@@ -232,4 +232,39 @@ AuthMiddleware.verifyToken,
 FeedController.getFeedReview,
 );
 
+ /******************************************************************************
+ *                     Delete feed review - "DELETE /api/feed/review?_id=63ce66ceff95c357646caaed"
+ ******************************************************************************/
+/**
+ * @api {DELETE} api/feed/review?_id=63ce66ceff95c357646caaed delete feed review 
+ * @apiName Delete Feed review -DELETE
+ * @apiGroup Feed
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "Feed deleted successfully",
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *       "error": true,
+ *       "message": "Something went wrong"
+ *     }
+ */
+feedRouter.delete("/",
+AuthMiddleware.verifyToken,
+FeedController.deleteFeed,
+);
+
 export default feedRouter;
