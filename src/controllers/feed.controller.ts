@@ -90,4 +90,18 @@ export class FeedController {
             return res.status(INTERNAL_SERVER_ERROR).send({error});
         }
     }
+
+    public static async addFeedFavourite(req: Request, res: Response) {
+        try {
+            const data: any = await feed.addFeedFavourite(req);
+            if (data.status) {
+                return res.status(StatusCodes.OK).json(data);
+            } else {
+                return res.status(StatusCodes.UNAUTHORIZED).json(data);
+            }
+        } catch (error) {
+            return res.status(INTERNAL_SERVER_ERROR).send({error});
+        }
+    }
+    
 }
