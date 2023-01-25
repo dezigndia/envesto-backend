@@ -267,4 +267,47 @@ AuthMiddleware.verifyToken,
 FeedController.deleteFeed,
 );
 
+/******************************************************************************
+ *                     Add feed favourite - "POST /api/feed/favourite"
+ ******************************************************************************/
+
+/**
+ * @api {POST} /api/feed Add feed favourite
+ * @apiName Add-feed-favourite POST
+ * @apiGroup Feed
+ * @apiHeader {String} Authorization Bearer token
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ * @apiExample Sample-Request:
+ *{
+ *       "user": "63ce31fa942384a654254401",
+ *       "feed":"63c937044d5070f99ad06503"
+ *  }
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "Feed favourite saved successfully !!"
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *        "error": true,
+ *        "message": "Something went wrong"
+ *     }
+ */
+    feedRouter.post("/favourite", 
+    AuthMiddleware.verifyToken,
+    AuthMiddleware.findUser,
+    FeedController.addFeedFavourite);
+
 export default feedRouter;
