@@ -310,4 +310,42 @@ FeedController.deleteFeed,
     AuthMiddleware.findUser,
     FeedController.addFeedFavourite);
 
+/******************************************************************************
+ *                     Get favourites feed - "GET /api/feed/favourite"
+ ******************************************************************************/
+/**
+ * @api {GET} api/feed/favourite get favourites Feed 
+ * @apiName get Feed favourites-GET
+ * @apiGroup Feed
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "favourites feed fetch successfully",
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *       "error": true,
+ *       "message": "Something went wrong"
+ *     }
+ */
+feedRouter.get("/favourite",
+AuthMiddleware.verifyToken,
+AuthMiddleware.findUser,
+FeedController.getFeedFavourite,
+);
+
+
+
 export default feedRouter;

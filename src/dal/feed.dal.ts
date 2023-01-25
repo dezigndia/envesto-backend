@@ -263,4 +263,26 @@ export class FeedDal {
     });
   }
 
+  public async getFeedFavourite(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { user } = requestData;
+        const data = await FavouriteFeed.find({user:user._id}).populate('feed')
+        if (data) {
+          resolve({
+            status: true,
+            data: data,
+            message: "Favourite feed fetch  successfully",
+          });
+        } 
+        else {
+          return resolve({status: false, message:"Something went wrong"});
+        }
+       
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
 }
