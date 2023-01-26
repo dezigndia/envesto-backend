@@ -1,5 +1,6 @@
 import { UserController } from "../../controllers";
 import { Router } from "express";
+import { AuthMiddleware } from '../../middlewares'
 
 const userRouter = Router();
 
@@ -110,5 +111,46 @@ userRouter.get("/profile", UserController.getUserProfile);
  *     }
  */
 userRouter.delete("/profile", UserController.deleteUserProfile);
+
+/******************************************************************************
+ *                     Add follower - "add /api/user/follower"
+ ******************************************************************************/
+/**
+ * @api {POST} /api/user/follow Add user follower
+ * @apiName Add-User-Follow-POST
+ * @apiGroup User
+ * @apiHeader {String} Authorization Bearer token
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ * @apiExample Sample-Request:
+ *{
+ *      "follower":"61a468b0d4e55c5760611108"
+ *  }
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "Added User follower successfully"
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *        "error": true,
+ *        "message": "Something went wrong"
+ *     }
+ */
+   userRouter.post("/follow",
+   AuthMiddleware.verifyToken,
+   AuthMiddleware.findUser,
+   UserController.addUserFollower);
 
 export default userRouter;

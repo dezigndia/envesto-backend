@@ -41,6 +41,8 @@ const UserSchema: Schema = new Schema(
     isPhoneVerified: { type: Boolean, trim: true, default: false },
     isEmailVerified: { type: Boolean, trim: true, default: false },
     role: { type: String, enum: ["ADMIN", "USER"], default: "USER" },
+    following: [{type: Schema.Types.ObjectId, ref: 'Follow'}],
+    followers: [{ type: Schema.Types.ObjectId, ref: 'Follow'}],
     isDeleted: { type: Boolean, default: false }
   },
   { timestamps: true }

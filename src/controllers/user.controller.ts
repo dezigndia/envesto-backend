@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {CREATED, INTERNAL_SERVER_ERROR, CONFLICT, OK} from "http-status-codes";
+import {CREATED, INTERNAL_SERVER_ERROR, CONFLICT, OK, StatusCodes} from "http-status-codes";
 import { UserService } from "../services";
 
 const userService = new UserService();
@@ -34,4 +34,17 @@ export class UserController {
       return res.status(INTERNAL_SERVER_ERROR).send({ error });
     }
   }
+
+  public static async addUserFollower(req: Request, res: Response) {
+    try {
+        const data: any = await userService.addUserFollower(req);
+        if (data.status) {
+            return res.status(StatusCodes.OK).json(data);
+        } else {
+            return res.status(StatusCodes.UNAUTHORIZED).json(data);
+        }
+    } catch (error) {
+        return res.status(INTERNAL_SERVER_ERROR).send({error});
+    }
+}
 }

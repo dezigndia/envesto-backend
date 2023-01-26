@@ -1,4 +1,4 @@
-import { User } from "../models";
+import { User, Follow } from "../models";
 
 export class UserService {
   constructor() {}
@@ -52,4 +52,25 @@ export class UserService {
     });
   }
 
+  public async addUserFollower(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { user } = requestData;
+        const { follower } = requestData.body;
+
+        let follow = new Follow({
+            follower: follower,
+            followee: user._id,
+        });
+        const data = await follow.save();
+        if (data) {
+          return resolve({status: true, data, message:"added user follower successfully"});
+        } else {
+            return resolve({status: false, message:"Something went wrong"});
+        }
+      } catch (error: any) {
+        return reject(error.errors);
+      }
+    });
+  }
 }
