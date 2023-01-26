@@ -285,4 +285,29 @@ export class FeedDal {
     });
   }
 
+  public async updateFeedFavouriteStatus(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { user } = requestData;
+        const { _id, favourite } = requestData.body;
+        const data = await FavouriteFeed.findByIdAndUpdate(_id, { favourite }, {new:true})
+        if (data) {
+          resolve({
+            status: true,
+            data: data,
+            message: "Favourite feed status updated successfully",
+          });
+        } 
+        else {
+          return resolve({status: false, message:"Something went wrong"});
+        }
+       
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  
+
 }

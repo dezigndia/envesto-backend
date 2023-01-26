@@ -346,6 +346,47 @@ AuthMiddleware.findUser,
 FeedController.getFeedFavourite,
 );
 
+/******************************************************************************
+ *           Update favourite status - "UPDATE /api/feed/favourite"
+ ******************************************************************************/
+/**
+ * @api {UPDATE} api/feed/favourite UPDATE favourite Feed 
+ * @apiName UPDATE Feed favourites-UPDATE
+ * @apiGroup Feed
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ * 
+ *  * @apiExample Sample-Request:
+ *    {
+ *       "_id": "63ce31fa942384a654254401",
+ *       "favourite":true/false
+ *    }
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "favourite status updated successfully",
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *       "error": true,
+ *       "message": "Something went wrong"
+ *     }
+ */
+feedRouter.put("/favourite",
+AuthMiddleware.verifyToken,
+AuthMiddleware.findUser,
+FeedController.updateFeedFavouriteStatus,
+);
+
 
 
 export default feedRouter;
