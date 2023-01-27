@@ -48,6 +48,19 @@ export class UserController {
     }
 }
 
+public static async updateUserFollow(req: Request, res: Response) {
+  try {
+      const data: any = await userService.updateUserFollow(req);
+      if (data.status) {
+          return res.status(StatusCodes.OK).json(data);
+      } else {
+          return res.status(StatusCodes.UNAUTHORIZED).json(data);
+      }
+  } catch (error) {
+      return res.status(INTERNAL_SERVER_ERROR).send({error});
+  }
+}
+
 public static async getUserFollowers(req: Request, res: Response) {
   try {
       const data: any = await userService.getUserFollowers(req);

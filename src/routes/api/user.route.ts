@@ -153,6 +153,49 @@ userRouter.delete("/profile", UserController.deleteUserProfile);
    AuthMiddleware.findUser,
    UserController.addUserFollower);
 
+/******************************************************************************
+ *          Remove user unfollow - "Remove /api/user/unfollow"
+ ******************************************************************************/
+/**
+ * @api {PUT} /api/user/unfollow update user unfollow
+ * @apiName PUT-User-unFollow-PUT
+ * @apiGroup User
+ * @apiHeader {String} Authorization Bearer token
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ * @apiExample Sample-Request:
+ * { 
+ *      "unfollow":"61a468b0d4e55c5760611108"
+ *  }
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "User unfollow updated successfully"
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *        "error": true,
+ *        "message": "Something went wrong"
+ *     }
+ */
+userRouter.put("/unfollow",
+AuthMiddleware.verifyToken,
+AuthMiddleware.findUser,
+UserController.updateUserFollow);
+
+
+
    /******************************************************************************
  *                     Get user followers - "get /api/user/followers"
  ******************************************************************************/

@@ -78,6 +78,25 @@ export class UserService {
     });
   }
 
+  public async updateUserFollow(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { user } = requestData;
+        const { unfollow } = requestData.body;
+          let _id = user._id
+        const data = await User.findByIdAndUpdate(_id, { $pull: { followers: unfollow, followee: _id } }, { new:true });
+        
+        if (data) {
+          return resolve({status: true, data, message:" user unfollowed successfully"});
+        } else {
+            return resolve({status: false, message:"Something went wrong"});
+        }
+      } catch (error: any) {
+        return reject(error.errors);
+      }
+    });
+  }
+
   public async getUserFollowers(requestData: any) {
     return new Promise(async (resolve, reject) => {
       try {
