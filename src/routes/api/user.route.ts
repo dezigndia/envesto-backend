@@ -153,4 +153,76 @@ userRouter.delete("/profile", UserController.deleteUserProfile);
    AuthMiddleware.findUser,
    UserController.addUserFollower);
 
+   /******************************************************************************
+ *                     Get user followers - "get /api/user/followers"
+ ******************************************************************************/
+/**
+ * @api {GET} /api/user/followers Get user followers
+ * @apiName Get-User-Follows-GET
+ * @apiGroup User
+ * @apiHeader {String} Authorization Bearer token
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "User followers fetch successfully"
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *        "error": true,
+ *        "message": "Something went wrong"
+ *     }
+ */
+   userRouter.get("/followers",
+   AuthMiddleware.verifyToken,
+   AuthMiddleware.findUser,
+   UserController.getUserFollowers);
+
+/******************************************************************************
+ *                     Get user following - "get /api/user/following"
+ ******************************************************************************/
+/**
+ * @api {GET} /api/user/following Get user following
+ * @apiName Get-User-following-GET
+ * @apiGroup User
+ * @apiHeader {String} Authorization Bearer token
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "User following fetch successfully"
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 unauthorized request
+ *     {
+ *        "status": false
+ *        "error": true,
+ *        "message": "Something went wrong"
+ *     }
+ */
+userRouter.get("/following",
+AuthMiddleware.verifyToken,
+AuthMiddleware.findUser,
+UserController.getUserFollowing);
+
 export default userRouter;

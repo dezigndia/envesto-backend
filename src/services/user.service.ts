@@ -63,10 +63,48 @@ export class UserService {
             followee: user._id,
         });
         const data = await follow.save();
+        if(data){
+          let _id = user._id
+        await User.findByIdAndUpdate(_id, { $push: { followers: data.followee, following: user._id } }, { new:true });
+        }
         if (data) {
           return resolve({status: true, data, message:"added user follower successfully"});
         } else {
             return resolve({status: false, message:"Something went wrong"});
+        }
+      } catch (error: any) {
+        return reject(error.errors);
+      }
+    });
+  }
+
+  public async getUserFollowers(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { user } = requestData;
+        const data = await User.findOne({_id:user._id})
+        .populate([{ path: 'followers' }])
+        if (data) {
+          return resolve({status: true, message:"User followers fetch successfully", data});
+        } else {
+            return resolve({status: false, message:"User followers not found"});
+        }
+      } catch (error: any) {
+        return reject(error.errors);
+      }
+    });
+  }
+
+  public async getUserFollowing(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { user } = requestData;
+        const data = await User.findOne({_id:user._id})
+        .populate([{ path: 'following' }])
+        if (data) {
+          return resolve({status: true, message:"User following fetch successfully", data});
+        } else {
+            return resolve({status: false, message:"User following not found"});
         }
       } catch (error: any) {
         return reject(error.errors);

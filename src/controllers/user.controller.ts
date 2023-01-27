@@ -47,4 +47,30 @@ export class UserController {
         return res.status(INTERNAL_SERVER_ERROR).send({error});
     }
 }
+
+public static async getUserFollowers(req: Request, res: Response) {
+  try {
+      const data: any = await userService.getUserFollowers(req);
+      if (data.status) {
+          return res.status(StatusCodes.OK).json(data);
+      } else {
+          return res.status(StatusCodes.UNAUTHORIZED).json(data);
+      }
+  } catch (error) {
+      return res.status(INTERNAL_SERVER_ERROR).send({error});
+  }
+}
+
+public static async getUserFollowing(req: Request, res: Response) {
+  try {
+      const data: any = await userService.getUserFollowing(req);
+      if (data.status) {
+          return res.status(StatusCodes.OK).json(data);
+      } else {
+          return res.status(StatusCodes.UNAUTHORIZED).json(data);
+      }
+  } catch (error) {
+      return res.status(INTERNAL_SERVER_ERROR).send({error});
+  }
+}
 }
