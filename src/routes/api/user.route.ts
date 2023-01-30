@@ -268,4 +268,48 @@ AuthMiddleware.verifyToken,
 AuthMiddleware.findUser,
 UserController.getUserFollowing);
 
+/******************************************************************************
+ *                     Update user password - "PUT /api/user/profile/password"
+ ******************************************************************************/
+
+/**
+ * @api {PUT} /api/user/profile/password Update User Password
+ * @apiName Update-User-Password
+ * @apiGroup User
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ *  *   @apiExample Sample-Request:
+ *   {
+ *      "currentPassword": "currentPassword",
+ *      "password": "password",
+ *      "confirmPassword": "password"
+ *    }
+ *
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "User profile updated Successfully",
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 204 unauthorized request
+ *     {
+ *        "status": false
+ *       "error": true,
+ *       "message": "something went wrong"
+ *       "data":null
+ *     }
+ */
+userRouter.put("/profile/password",
+    AuthMiddleware.verifyToken,
+    AuthMiddleware.findUser,
+    UserController.updateUserPassword);
 export default userRouter;

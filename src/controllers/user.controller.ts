@@ -86,4 +86,18 @@ public static async getUserFollowing(req: Request, res: Response) {
       return res.status(INTERNAL_SERVER_ERROR).send({error});
   }
 }
+
+public static async updateUserPassword(req: Request, res: Response) {
+  try {
+    const data: any = await userService.updateUserPassword(req);
+    if (data.status) {
+      return res.status(StatusCodes.CREATED).json(data);
+    } else {
+      return res.status(StatusCodes.BAD_REQUEST).json(data);
+    }
+  } catch (error) {
+    return res.status(INTERNAL_SERVER_ERROR).send({error});
+  }
+}
+
 }

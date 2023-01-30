@@ -130,4 +130,41 @@ export class UserService {
       }
     });
   }
+
+  public async updateUserPassword(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { _id } = requestData.user;
+        const { currentPassword, password, confirmPassword } = requestData.body;
+        const user:any = await User.findById(_id);
+        if (user) {
+          if (user.password !== currentPassword) {
+            resolve({
+              status: false,
+              message: "Current password not matched"
+            })
+          } else if (password !== confirmPassword) {
+            resolve({
+              status: false,
+              message: "Password and confirm password needs to be same"
+            })
+          } else {
+            await User.findByIdAndUpdate(_id, { password });
+            resolve({
+              status: true,
+              message: "User password changed successfully"
+            })
+          }
+        } else {
+          resolve({
+            status: false,
+            message: "User not found"
+          })
+        }
+
+      } catch (error) {
+        reject(error);
+      }
+    })
+  }
 }
