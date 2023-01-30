@@ -308,8 +308,53 @@ UserController.getUserFollowing);
  *       "data":null
  *     }
  */
-userRouter.put("/profile/password",
+     userRouter.put("/profile/password",
     AuthMiddleware.verifyToken,
     AuthMiddleware.findUser,
     UserController.updateUserPassword);
+
+    /******************************************************************************
+ *               User forgot  password - "POST  /api/user/forgot/password"
+ ******************************************************************************/
+/**
+ * @api {POST} /api/user/forgot/password Update Forgot User Password
+ * @apiName POST-Forgot-User-Password
+ * @apiGroup User
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ *  *   @apiExample Sample-Request:
+ *   {
+ *      "password": "password",
+ *      "confirmPassword": "password"
+ *    }
+ *
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "User password updated Successfully",
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 204 unauthorized request
+ *     {
+ *        "status": false
+ *       "error": true,
+ *       "message": "something went wrong"
+ *       "data":null
+ *     }
+ */
+userRouter.put(
+   "/profile/forgot/password",
+   AuthMiddleware.verifyToken,
+   AuthMiddleware.findUser,
+   UserController.updateForgotUserPassword
+ );
 export default userRouter;

@@ -167,4 +167,43 @@ export class UserService {
       }
     })
   }
+
+  public async updateForgotUserPassword(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { _id } = requestData.user;
+        const { password, confirmPassword, email, currentPassword } =
+          requestData.body;
+        const userDetails = await User.findById(_id);
+        if (userDetails) {
+            const isEmail = await User.findOne({email:email});
+            if (!isEmail) {
+              resolve({
+                status: false,
+                message: "Wrong Email Id",
+              });
+          }
+          if (password !== confirmPassword) {
+            resolve({
+              status: false,
+              message: "Password and confirm password needs to be same",
+            });
+          }
+
+          await User.findByIdAndUpdate(_id, { password: password });
+          resolve({
+            status: true,
+            message: "User password changed successfully",
+          });
+        } else {
+          resolve({
+            status: false,
+            message: "User not found",
+          });
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }
