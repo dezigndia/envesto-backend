@@ -1,4 +1,4 @@
-import { User, Follow } from "../models";
+import { User, Follow, IssueReport } from "../models";
 
 export class UserService {
   constructor() {}
@@ -203,6 +203,25 @@ export class UserService {
         }
       } catch (error) {
         reject(error);
+      }
+    });
+  }
+
+  public async addContentReportIssue(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { _id } = requestData.user;
+        const { title, description } = requestData.body;
+
+        let  issueReport = new IssueReport({user:_id, title, description});
+        const data = await issueReport.save();
+        if (data) {
+          return resolve({status: true, data, message:"added content report issue successfully"});
+        } else {
+            return resolve({status: false, message:"Something went wrong"});
+        }
+      } catch (error: any) {
+        return reject(error.errors);
       }
     });
   }

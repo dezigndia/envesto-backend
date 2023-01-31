@@ -5,4 +5,5 @@ export * from './category.model';
 export * from './feedback.model'
 export * from './review.model';
 export * from './favouriteFeed.model';
-export * from './follow.model'
+export * from './follow.model';
+export * from './issueReport.model';

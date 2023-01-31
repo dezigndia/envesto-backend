@@ -313,12 +313,12 @@ UserController.getUserFollowing);
     AuthMiddleware.findUser,
     UserController.updateUserPassword);
 
-    /******************************************************************************
- *               User forgot  password - "POST  /api/user/forgot/password"
+ /******************************************************************************
+ *               User forgot  password - "PUT  /api/user/forgot/password"
  ******************************************************************************/
 /**
- * @api {POST} /api/user/forgot/password Update Forgot User Password
- * @apiName POST-Forgot-User-Password
+ * @api {PUT} /api/user/forgot/password Update Forgot User Password
+ * @apiName PUT-Forgot-User-Password
  * @apiGroup User
  *
  * @apiSuccess {boolean} error for checking the error.
@@ -357,4 +357,48 @@ userRouter.put(
    AuthMiddleware.findUser,
    UserController.updateForgotUserPassword
  );
+
+/******************************************************************************
+ *             Add content report issue - "PUT  /api/user/report/issue"
+ ******************************************************************************/
+/**
+ * @api {POST} /api/user/report/issue  Add content report issue
+ * @apiName POST-Content-Report-Issue
+ * @apiGroup User
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ *  @apiExample Sample-Request:
+ *   {
+ *      "title": "title",
+ *      "description": "description"
+ *    }
+ *
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "Added content report issue Successfully",
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 204 unauthorized request
+ *     {
+ *        "status": false
+ *       "error": true,
+ *       "message": "something went wrong"
+ *       "data":null
+ *     }
+ */
+userRouter.post("/report/issue",
+   AuthMiddleware.verifyToken,
+   AuthMiddleware.findUser,
+   UserController.addContentReportIssue);
+
 export default userRouter;

@@ -113,5 +113,18 @@ public static async updateForgotUserPassword(req: Request, res: Response) {
   }
 }
 
+public static async addContentReportIssue(req: Request, res: Response) {
+  try {
+    const data: any = await userService.addContentReportIssue(req);
+    if (data.status) {
+      return res.status(StatusCodes.CREATED).json(data);
+    } else {
+      return res.status(StatusCodes.BAD_REQUEST).json(data);
+    }
+  } catch (error) {
+    return res.status(INTERNAL_SERVER_ERROR).send({ error });
+  }
+}
+
 
 }
