@@ -1,7 +1,6 @@
 import { Response, Request } from "express";
 import { AuthDal } from "../dal/auth.dal";
 import { CREATED, INTERNAL_SERVER_ERROR, OK, CONFLICT} from "http-status-codes";
-import { logger } from '@services/index';
 import { createReadStream } from "fs";
 import { IRequest } from '../interfaces/request.interface';
 

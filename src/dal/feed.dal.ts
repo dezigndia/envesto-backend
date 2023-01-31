@@ -1,10 +1,9 @@
-import { Feed } from "../models/index";
+import { Feed, Review, FavouriteFeed, IFavouriteFeed } from "../models/index";
 import { Pagination, IRequest, IFeed } from '../interfaces';
 import { getUserFromRequest } from "../helpers/request.helper";
 import { Request } from "express";
 import { FileUtils } from "../utils";
 import { json } from "node:stream/consumers";
-import { upload } from "../middlewares";
 
 export class FeedDal {
   public async postFeed(data: IFeed, files: any, user: any) {
@@ -145,4 +144,170 @@ export class FeedDal {
       }
     });
   }
+
+  public async addFeedReview(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+     
+      try {
+        const { feedId, review, like, dislike } = requestData.body;
+        const { comment, stars } = review;
+        const { user } = requestData;
+
+        const newReview = new Review({
+          comment,
+          stars,
+          user: user._id,
+          like,
+          dislike,
+          feed: feedId,
+        });
+        const addedReview = await newReview.save();
+        if (addedReview) {
+          const review = await Review.find({"feed": feedId }).sort({
+            createdAt: -1,
+          });
+          resolve({
+            status: true,
+            data: addedReview,
+            message: "Review added successfully",
+          });
+        } 
+       
+        else {
+          resolve({
+            status: false,
+            message: "Unable to add review",
+          });
+        }
+       
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  public async getFeedReview(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { _id } = requestData.query;
+       const data = await Review.findById(_id)
+        if (data) {
+          resolve({
+            status: true,
+            data: data,
+            message: "Review list fetch successfully",
+          });
+        } 
+        else {
+          return resolve({status: false, message:"Something went wrong"});
+        }
+       
+      } catch (error) {
+        console.log(error)
+        reject(error);
+      }
+    });
+  }
+
+  public async deleteFeed(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { _id } = requestData;
+       const data = await Feed.findByIdAndUpdate(_id, { isDeleted: true }, { new: true });
+        if (data) {
+          resolve({
+            status: true,
+            data: data,
+            message: "Feed deleted successfully",
+          });
+        } 
+        else {
+          return resolve({status: false, message:"Something went wrong"});
+        }
+       
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  public async addFeedFavourite(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { feed } = requestData.body;
+        const { user } = requestData;
+        const isFavouriteFeed = await FavouriteFeed.findOne({feed, user:user._id})
+
+        if(isFavouriteFeed){
+          return resolve({status: false, message:"You already saved as favourite"});
+        }
+        const newFavouriteFeed = new FavouriteFeed({
+          user:user._id,
+          feed
+        });
+        const data = await newFavouriteFeed.save();
+        if (data) {
+          resolve({
+            status: true,
+            data: data,
+            message: "Feed favourite saved successfully",
+          });
+        } 
+        else {
+          return resolve({status: false, message:"Something went wrong"});
+        }
+       
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  public async getFeedFavourite(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { user } = requestData;
+        const data = await FavouriteFeed.find({user:user._id}).populate('feed')
+        if (data) {
+          resolve({
+            status: true,
+            data: data,
+            message: "Favourite feed fetch  successfully",
+          });
+        } 
+        else {
+          return resolve({status: false, message:"Something went wrong"});
+        }
+       
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  public async updateFeedFavouriteStatus(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { user } = requestData;
+        const { _id, favourite } = requestData.body;
+        const data = await FavouriteFeed.findByIdAndUpdate(_id, { favourite }, {new:true})
+        if (data) {
+          resolve({
+            status: true,
+            data: data,
+            message: "Favourite feed status updated successfully",
+          });
+        } 
+        else {
+          return resolve({status: false, message:"Something went wrong"});
+        }
+       
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  
+
 }

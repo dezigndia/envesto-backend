@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CREATED, INTERNAL_SERVER_ERROR, CONFLICT, OK } from 'http-status-codes';
+import { CREATED, INTERNAL_SERVER_ERROR, CONFLICT, OK, StatusCodes } from 'http-status-codes';
 import { IFeed } from '../interfaces/feed.interface';
 import { FeedDal } from '../dal/feed.dal';
 import { getUserFromRequest } from "../helpers/request.helper";
@@ -51,4 +51,83 @@ export class FeedController {
             return res.status(INTERNAL_SERVER_ERROR).send({error});
         }
     }
+
+    public static async addFeedReview(req: Request, res: Response) {
+        try {
+            const data: any = await feed.addFeedReview(req);
+            if (data.status) {
+                return res.status(StatusCodes.OK).json(data);
+            } else {
+                return res.status(StatusCodes.UNAUTHORIZED).json(data);
+            }
+        } catch (error) {
+            return res.status(INTERNAL_SERVER_ERROR).send({error});
+        }
+    }
+
+    public static async getFeedReview(req: Request, res: Response) {
+        try {
+            const data: any = await feed.getFeedReview(req);
+            if (data.status) {
+                return res.status(StatusCodes.OK).json(data);
+            } else {
+                return res.status(StatusCodes.UNAUTHORIZED).json(data);
+            }
+        } catch (error) {
+            return res.status(INTERNAL_SERVER_ERROR).send({error});
+        }
+    }
+
+    public static async deleteFeed(req: Request, res: Response) {
+        try {
+            const data: any = await feed.deleteFeed(req.query);
+            if (data.status) {
+                return res.status(StatusCodes.OK).json(data);
+            } else {
+                return res.status(StatusCodes.UNAUTHORIZED).json(data);
+            }
+        } catch (error) {
+            return res.status(INTERNAL_SERVER_ERROR).send({error});
+        }
+    }
+
+    public static async addFeedFavourite(req: Request, res: Response) {
+        try {
+            const data: any = await feed.addFeedFavourite(req);
+            if (data.status) {
+                return res.status(StatusCodes.OK).json(data);
+            } else {
+                return res.status(StatusCodes.UNAUTHORIZED).json(data);
+            }
+        } catch (error) {
+            return res.status(INTERNAL_SERVER_ERROR).send({error});
+        }
+    }
+
+    public static async getFeedFavourite(req: Request, res: Response) {
+        try {
+            const data: any = await feed.getFeedFavourite(req);
+            if (data.status) {
+                return res.status(StatusCodes.OK).json(data);
+            } else {
+                return res.status(StatusCodes.UNAUTHORIZED).json(data);
+            }
+        } catch (error) {
+            return res.status(INTERNAL_SERVER_ERROR).send({error});
+        }
+    }
+
+    public static async updateFeedFavouriteStatus(req: Request, res: Response) {
+        try {
+            const data: any = await feed.updateFeedFavouriteStatus(req);
+            if (data.status) {
+                return res.status(StatusCodes.OK).json(data);
+            } else {
+                return res.status(StatusCodes.UNAUTHORIZED).json(data);
+            }
+        } catch (error) {
+            return res.status(INTERNAL_SERVER_ERROR).send({error});
+        }
+    }
+    
 }

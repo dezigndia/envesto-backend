@@ -17,23 +17,37 @@ import { model, Schema } from "mongoose";
 // Social Media handles
 // Paid Subscription lists
 
-const UserSchema: Schema = new Schema({
-    name: {type: String, required: true, trim: true, lowercase: true},
-    email: {type: String, required: true,trim: true, lowercase: true,unique: true},
-    password:{type:String,trim: true, lowercase: true},
-    country:{type:String,trim: true, lowercase: true},
-    interest:{type:String,trim: true, lowercase: true},
-    phone: { type: Number, required: true, minLength: 10, maxLength: 10, unique: true },
-    dob: {type: String, trim: true},
-    isPhoneVerified: {type: Boolean, trim: true, default: false},
-    isEmailVerified: {type: Boolean, trim: true, default: false},
-    role :{
-        type : String,
-        enum:["ADMIN", "USER"],
-        default:"USER",
+const UserSchema: Schema = new Schema(
+  {
+    name: { type: String, required: true, trim: true, lowercase: true },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      unique: true,
     },
-}, {timestamps: true});
+    password: { type: String, trim: true, lowercase: true },
+    country: { type: String, trim: true, lowercase: true },
+    interest: { type: String, trim: true, lowercase: true },
+    phone: {
+      type: Number,
+      required: true,
+      minLength: 10,
+      maxLength: 10,
+      unique: true,
+    },
+    dob: { type: String, trim: true },
+    isPhoneVerified: { type: Boolean, trim: true, default: false },
+    isEmailVerified: { type: Boolean, trim: true, default: false },
+    role: { type: String, enum: ["ADMIN", "USER"], default: "USER" },
+    following: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    followers: [{ type: Schema.Types.ObjectId, ref:'User'}],
+    isDeleted: { type: Boolean, default: false }
+  },
+  { timestamps: true }
+);
 
-const Users = model("Users", UserSchema);
+const User = model("User", UserSchema);
 
-export { Users };
+export { User };
