@@ -225,4 +225,21 @@ export class UserService {
       }
     });
   }
+
+  public async getContentReportIssueList(requestData: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { _id } = requestData.user;
+        const data = await IssueReport.find();
+        if (data) {
+          return resolve({status: true, data, message:"content report issue list fetch successfully"});
+        } else {
+            return resolve({status: false, message:"Something went wrong"});
+        }
+      } catch (error: any) {
+        return reject(error.errors);
+      }
+    });
+  }
+
 }

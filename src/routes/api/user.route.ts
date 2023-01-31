@@ -401,4 +401,40 @@ userRouter.post("/report/issue",
    AuthMiddleware.findUser,
    UserController.addContentReportIssue);
 
+   /******************************************************************************
+ *             get content report issue List- "GET  /api/user/report/issue"
+ ******************************************************************************/
+/**
+ * @api {GET} /api/user/report/issue  Get content report issue List
+ * @apiName GET-Content-Report-Issue-List
+ * @apiGroup User
+ *
+ * @apiSuccess {boolean} error for checking the error.
+ * @apiSuccess {String} message for information.
+ * @apiSuccess {object} data for payload.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": true,
+ *       "error": false,
+ *       "message": "content report issue list fetch Successfully",
+ *       "data": object
+ *     }
+ *
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 204 unauthorized request
+ *     {
+ *        "status": false
+ *       "error": true,
+ *       "message": "something went wrong"
+ *       "data":null
+ *     }
+ */
+userRouter.get("/report/issue",
+AuthMiddleware.verifyToken,
+AuthMiddleware.findUser,
+UserController.getContentReportIssueList);
+
 export default userRouter;
